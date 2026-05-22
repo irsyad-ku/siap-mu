@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+
+<html lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Input Transaksi Kas - SIAP-MU</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary-container": "#006e5a",
+                        "on-secondary": "#ffffff",
+                        "secondary-container": "#7bf8a1",
+                        "tertiary-fixed": "#6ff9d6",
+                        "error-container": "#ffdad6",
+                        "on-secondary-fixed": "#00210c",
+                        "on-tertiary-container": "#68f3d0",
+                        "outline-variant": "#bec9c3",
+                        "on-secondary-container": "#007239",
+                        "secondary-fixed": "#7efba4",
+                        "on-primary-fixed": "#002117",
+                        "primary-container": "#0f6e56",
+                        "surface-tint": "#086b53",
+                        "on-primary": "#ffffff",
+                        "on-surface-variant": "#3f4944",
+                        "surface-container-highest": "#e2e0fc",
+                        "surface-bright": "#fcf8ff",
+                        "on-tertiary-fixed-variant": "#005141",
+                        "surface-container-high": "#e8e5ff",
+                        "on-primary-fixed-variant": "#00513e",
+                        "primary-fixed-dim": "#84d6b9",
+                        "on-error": "#ffffff",
+                        "on-tertiary-fixed": "#002019",
+                        "primary-fixed": "#a0f3d4",
+                        "inverse-on-surface": "#f2efff",
+                        "on-error-container": "#93000a",
+                        "error": "#ba1a1a",
+                        "tertiary-fixed-dim": "#4eddbb",
+                        "background": "#fcf8ff",
+                        "surface-dim": "#dad7f3",
+                        "on-background": "#1a1a2e",
+                        "surface-variant": "#e2e0fc",
+                        "outline": "#6f7a74",
+                        "inverse-surface": "#2f2e43",
+                        "tertiary": "#005344",
+                        "on-surface": "#1a1a2e",
+                        "on-primary-container": "#9aedcf",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary-fixed-dim": "#61de8a",
+                        "secondary": "#006d37",
+                        "inverse-primary": "#84d6b9",
+                        "surface-container": "#efecff",
+                        "on-secondary-fixed-variant": "#005228",
+                        "surface-container-low": "#f5f2ff",
+                        "surface": "#fcf8ff",
+                        "primary": "#005440",
+                        "on-tertiary": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xl": "32px",
+                        "md": "16px",
+                        "margin-mobile": "16px",
+                        "gutter": "24px",
+                        "base": "4px",
+                        "lg": "24px",
+                        "margin-desktop": "32px",
+                        "xs": "4px",
+                        "sm": "8px"
+                    },
+                    "fontFamily": {
+                        "headline-sm": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "title-md": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "label-md": ["Inter"],
+                        "headline-xl": ["Inter"],
+                        "body-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-sm": ["18px", { "lineHeight": "26px", "fontWeight": "600" }],
+                        "headline-md": ["22px", { "lineHeight": "30px", "fontWeight": "600" }],
+                        "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "title-md": ["16px", { "lineHeight": "24px", "fontWeight": "600" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "32px", "fontWeight": "700" }],
+                        "headline-lg": ["28px", { "lineHeight": "36px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500" }],
+                        "headline-xl": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { background-color: #F0FAF5; }
+        .bg-gradient-primary { background: linear-gradient(to right, #0F6E56, #27AE60); }
+        .hover-bg-gradient-primary:hover { filter: brightness(1.1); }
+        .card-shadow { box-shadow: 0px 4px 12px rgba(15, 110, 86, 0.05); }
+        .form-input-focus:focus-within { border-color: #0F6E56; box-shadow: 0 0 0 2px rgba(15, 110, 86, 0.2); }
+        .radio-card-selected-in { border-color: #27AE60; background-color: rgba(39, 174, 96, 0.05); }
+        .radio-card-selected-out { border-color: #E74C3C; background-color: rgba(231, 76, 60, 0.05); }
+    </style>
+</head>
+<body class="font-body-md text-on-surface antialiased flex">
+<!-- SideNavBar (Shared Component) -->
+<nav class="w-[280px] h-screen fixed left-0 top-0 bg-[#085041] shadow-xl flex flex-col py-xl hidden md:flex z-50">
+<div class="px-lg mb-xl flex items-center gap-md">
+<img alt="Mosque Logo" class="w-12 h-12 rounded-full object-cover border-2 border-secondary-fixed" data-alt="A modern, minimalist geometric Islamic star pattern serving as a logo. The logo uses a bright green color on a dark background, establishing a corporate modern yet spiritual identity for a mosque administration platform." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCnQB4u729mEJAB4_El67RTTadaGKen_u8PE49-Ti62Zmy2Kg8pxaevKAgk3HskIlB_MbJhrX1ygNs-LzkxhBAFfPDKHlqVrrQu5JCn0w2l8l38V4SXPdN41wHk2HspFzFdlwCEUANNXJuZ3GXNFMI_uX1AxCZtso8e2AzYOmOcR-x_A4NZ5coiGDFepkrbXMak0LvQLtopNCAD3BOF1sVUz3Fff4aGIloVn0zC2LuEHiPbiQbVJTwr3Mtdftt9gEcgIqK7DWFe7jEE"/>
+<div>
+<h1 class="text-headline-md font-headline-md font-bold text-on-primary">SIAP-MU</h1>
+<p class="text-label-md font-label-md text-white/80">Masjid Umat Admin</p>
+</div>
+</div>
+<ul class="flex-1 flex flex-col gap-sm px-md overflow-y-auto">
+<li>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-white/80 hover:text-white hover:bg-white/5 transition-colors font-headline-sm text-headline-sm" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">dashboard</span>
+                    Dashboard
+                </a>
+</li>
+<li>
+<a class="flex items-center gap-md px-md py-sm rounded-lg border-l-4 border-secondary-fixed bg-white/10 text-white font-bold font-headline-sm text-headline-sm scale-95 transition-transform" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">payments</span>
+                    Keuangan
+                </a>
+</li>
+<li>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-white/80 hover:text-white hover:bg-white/5 transition-colors font-headline-sm text-headline-sm" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">event</span>
+                    Kegiatan
+                </a>
+</li>
+<li>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-white/80 hover:text-white hover:bg-white/5 transition-colors font-headline-sm text-headline-sm" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">inventory_2</span>
+                    Aset
+                </a>
+</li>
+<li>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-white/80 hover:text-white hover:bg-white/5 transition-colors font-headline-sm text-headline-sm" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">mosque</span>
+                    Fasilitas
+                </a>
+</li>
+<li>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-white/80 hover:text-white hover:bg-white/5 transition-colors font-headline-sm text-headline-sm" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">build</span>
+                    Pemeliharaan
+                </a>
+</li>
+<li>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-white/80 hover:text-white hover:bg-white/5 transition-colors font-headline-sm text-headline-sm" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">handshake</span>
+                    Peminjaman
+                </a>
+</li>
+<li>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-white/80 hover:text-white hover:bg-white/5 transition-colors font-headline-sm text-headline-sm" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">campaign</span>
+                    Pengumuman
+                </a>
+</li>
+<li>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-white/80 hover:text-white hover:bg-white/5 transition-colors font-headline-sm text-headline-sm" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">manage_accounts</span>
+                    Manajemen Pengguna
+                </a>
+</li>
+</ul>
+</nav>
+<!-- Main Content Area Wrapper -->
+<div class="flex-1 md:ml-[280px] flex flex-col min-h-screen">
+<!-- TopAppBar (Shared Component) -->
+<header class="h-16 fixed top-0 right-0 left-0 md:left-[280px] z-40 bg-white/80 backdrop-blur-md shadow-sm flex justify-between items-center px-lg w-full md:w-[calc(100%-280px)]">
+<div class="flex items-center gap-sm">
+<!-- Mobile menu button (hidden on desktop) -->
+<button class="md:hidden p-2 text-primary hover:bg-primary-container/10 rounded-full transition-colors">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<span class="text-headline-sm font-headline-sm font-bold text-primary hidden md:block">SIAP-MU</span>
+</div>
+<div class="flex items-center gap-md">
+<button class="p-2 text-on-surface-variant hover:bg-primary-container/10 rounded-full transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<img alt="Administrator Profile" class="w-8 h-8 rounded-full border border-outline-variant object-cover cursor-pointer hover:opacity-80 transition-opacity" data-alt="A portrait of a professional administrator in a modern office setting, smiling gently. The lighting is soft and bright, complementing the clean, trustworthy corporate modern aesthetic of the application." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAemJcuSARInA33O96iaKWcddRf9-1krvBo1LdYktY3b1HHzjnvsSK9Vc2mIvj24lECGhMYRfPUMky_CUZedbOIFuW84FVzDDcMH-sJ7PtSnI1ncZZYW4eLMZ3yK_WQdS7gC3gV0BX6H5fYAhYpVsiQeVkSxG42YW2fP2bmVz3OtADEBzhIa85SRdm3TckUzjRrBV0xtj25MkupqSluds4PgY8k9kGAEW-dyM5tXFLxmeyCtOiUhP6hjOYM9Cg1Vo0L5fPhgk7RbrGi"/>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-1 mt-16 p-margin-mobile md:p-margin-desktop bg-[#F0FAF5]">
+<div class="max-w-3xl mx-auto space-y-xl">
+<!-- Page Header -->
+<div>
+<h2 class="text-headline-xl font-headline-xl text-primary mb-sm">Input Transaksi Kas</h2>
+<p class="text-body-md font-body-md text-on-surface-variant">Catat pemasukan atau pengeluaran kas masjid dengan detail.</p>
+</div>
+<!-- Form Card -->
+<div class="bg-white rounded-xl border border-[#D1FAE5] card-shadow p-lg">
+<form class="space-y-lg">
+<!-- Transaction Type: Radio Cards -->
+<div>
+<label class="block text-title-md font-title-md text-primary mb-md">Jenis Transaksi</label>
+<div class="grid grid-cols-2 gap-md">
+<!-- Pemasukan -->
+<label class="relative cursor-pointer">
+<input checked="" class="peer sr-only" name="transaction_type" type="radio" value="pemasukan"/>
+<div class="rounded-lg border-2 border-outline-variant p-md flex flex-col items-center justify-center gap-sm transition-all hover:bg-surface-container-low peer-checked:border-[#27AE60] peer-checked:bg-[#27AE60]/5">
+<div class="w-10 h-10 rounded-full bg-[#27AE60]/10 flex items-center justify-center text-[#27AE60]">
+<span class="material-symbols-outlined">arrow_downward</span>
+</div>
+<span class="font-title-md text-title-md text-primary">Pemasukan</span>
+</div>
+<div class="absolute top-2 right-2 opacity-0 peer-checked:opacity-100 text-[#27AE60] transition-opacity">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+</label>
+<!-- Pengeluaran -->
+<label class="relative cursor-pointer">
+<input class="peer sr-only" name="transaction_type" type="radio" value="pengeluaran"/>
+<div class="rounded-lg border-2 border-outline-variant p-md flex flex-col items-center justify-center gap-sm transition-all hover:bg-surface-container-low peer-checked:border-[#E74C3C] peer-checked:bg-[#E74C3C]/5">
+<div class="w-10 h-10 rounded-full bg-[#E74C3C]/10 flex items-center justify-center text-[#E74C3C]">
+<span class="material-symbols-outlined">arrow_upward</span>
+</div>
+<span class="font-title-md text-title-md text-primary">Pengeluaran</span>
+</div>
+<div class="absolute top-2 right-2 opacity-0 peer-checked:opacity-100 text-[#E74C3C] transition-opacity">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+</label>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-lg">
+<!-- Tanggal -->
+<div class="relative border border-outline-variant rounded-lg form-input-focus transition-all">
+<label class="absolute -top-2.5 left-3 bg-white px-1 text-label-md font-label-md text-primary">Tanggal</label>
+<input class="w-full bg-transparent border-none focus:ring-0 text-body-lg font-body-lg text-on-surface p-md rounded-lg" required="" type="date"/>
+</div>
+<!-- Kategori -->
+<div class="relative border border-outline-variant rounded-lg form-input-focus transition-all">
+<label class="absolute -top-2.5 left-3 bg-white px-1 text-label-md font-label-md text-primary">Kategori</label>
+<select class="w-full bg-transparent border-none focus:ring-0 text-body-lg font-body-lg text-on-surface p-md rounded-lg appearance-none cursor-pointer" required="">
+<option disabled="" selected="" value="">Pilih Kategori...</option>
+<option value="infaq">Infaq Jamaah</option>
+<option value="zakat">Zakat Fitrah/Mal</option>
+<option value="donasi">Donasi Kegiatan</option>
+<option value="operasional">Operasional (Listrik/Air)</option>
+<option value="kegiatan">Biaya Kegiatan</option>
+</select>
+<div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-outline">
+<span class="material-symbols-outlined">expand_more</span>
+</div>
+</div>
+</div>
+<!-- Jumlah -->
+<div class="relative border border-outline-variant rounded-lg form-input-focus transition-all flex items-center">
+<label class="absolute -top-2.5 left-3 bg-white px-1 text-label-md font-label-md text-primary">Jumlah</label>
+<span class="pl-md py-md text-body-lg font-body-lg text-on-surface-variant bg-surface-container-low rounded-l-lg border-r border-outline-variant mr-2 px-3">Rp</span>
+<input class="w-full bg-transparent border-none focus:ring-0 text-body-lg font-body-lg text-on-surface p-md rounded-r-lg" min="0" placeholder="0" required="" type="number"/>
+</div>
+<!-- Keterangan -->
+<div class="relative border border-outline-variant rounded-lg form-input-focus transition-all">
+<label class="absolute -top-2.5 left-3 bg-white px-1 text-label-md font-label-md text-primary">Keterangan</label>
+<textarea class="w-full bg-transparent border-none focus:ring-0 text-body-lg font-body-lg text-on-surface p-md rounded-lg resize-none" placeholder="Tuliskan detail transaksi..." required="" rows="3"></textarea>
+</div>
+<!-- Upload Bukti -->
+<div>
+<label class="block text-title-md font-title-md text-primary mb-md">Bukti Transaksi (Opsional)</label>
+<div class="border-2 border-dashed border-outline-variant rounded-lg p-xl flex flex-col items-center justify-center text-center cursor-pointer hover:bg-surface-container-low transition-colors group">
+<div class="w-12 h-12 rounded-full bg-primary-container/10 flex items-center justify-center text-primary-container mb-sm group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-3xl">cloud_upload</span>
+</div>
+<p class="text-body-md font-body-md text-on-surface-variant"><span class="font-semibold text-primary">Klik untuk unggah</span> atau seret file ke sini</p>
+<p class="text-label-md font-label-md text-outline mt-1">PNG, JPG, PDF (Maks. 5MB)</p>
+<input accept=".png,.jpg,.jpeg,.pdf" class="hidden" type="file"/>
+</div>
+</div>
+<!-- Actions -->
+<div class="pt-lg border-t border-outline-variant flex justify-end gap-md">
+<button class="px-6 py-2.5 rounded-lg border border-primary text-primary font-title-md text-title-md hover:bg-primary-container/5 transition-colors" type="button">
+                                Batal
+                            </button>
+<button class="px-6 py-2.5 rounded-lg bg-gradient-primary text-white font-title-md text-title-md hover-bg-gradient-primary transition-all shadow-md" type="submit">
+                                Simpan Transaksi
+                            </button>
+</div>
+</form>
+</div>
+</div>
+</main>
+<!-- Footer (Shared Component) -->
+<footer class="w-full py-md px-lg bg-surface-container-low border-t border-outline-variant flex justify-between items-center text-on-surface-variant font-label-md text-label-md mt-auto">
+<div>
+                © 2024 <span class="font-bold text-primary">SIAP-MU</span> - Sistem Informasi Administrasi Masjid. v1.2.0
+            </div>
+<div class="flex gap-lg">
+<a class="hover:text-primary transition-colors" href="#">Bantuan</a>
+<a class="hover:text-primary transition-colors" href="#">Kebijakan Privasi</a>
+<a class="hover:text-primary transition-colors" href="#">Kontak Kami</a>
+</div>
+</footer>
+</div>
+</body></html>

@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+
+<html lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Daftar Akun Baru - SIAP-MU</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "tertiary-container": "#006e5a",
+                      "on-secondary": "#ffffff",
+                      "secondary-container": "#7bf8a1",
+                      "tertiary-fixed": "#6ff9d6",
+                      "error-container": "#ffdad6",
+                      "on-secondary-fixed": "#00210c",
+                      "on-tertiary-container": "#68f3d0",
+                      "outline-variant": "#bec9c3",
+                      "on-secondary-container": "#007239",
+                      "secondary-fixed": "#7efba4",
+                      "on-primary-fixed": "#002117",
+                      "primary-container": "#0f6e56",
+                      "surface-tint": "#086b53",
+                      "on-primary": "#ffffff",
+                      "on-surface-variant": "#3f4944",
+                      "surface-container-highest": "#e2e0fc",
+                      "surface-bright": "#fcf8ff",
+                      "on-tertiary-fixed-variant": "#005141",
+                      "surface-container-high": "#e8e5ff",
+                      "on-primary-fixed-variant": "#00513e",
+                      "primary-fixed-dim": "#84d6b9",
+                      "on-error": "#ffffff",
+                      "on-tertiary-fixed": "#002019",
+                      "primary-fixed": "#a0f3d4",
+                      "inverse-on-surface": "#f2efff",
+                      "on-error-container": "#93000a",
+                      "error": "#ba1a1a",
+                      "tertiary-fixed-dim": "#4eddbb",
+                      "background": "#fcf8ff",
+                      "surface-dim": "#dad7f3",
+                      "on-background": "#1a1a2e",
+                      "surface-variant": "#e2e0fc",
+                      "outline": "#6f7a74",
+                      "inverse-surface": "#2f2e43",
+                      "tertiary": "#005344",
+                      "on-surface": "#1a1a2e",
+                      "on-primary-container": "#9aedcf",
+                      "surface-container-lowest": "#ffffff",
+                      "secondary-fixed-dim": "#61de8a",
+                      "secondary": "#006d37",
+                      "inverse-primary": "#84d6b9",
+                      "surface-container": "#efecff",
+                      "on-secondary-fixed-variant": "#005228",
+                      "surface-container-low": "#f5f2ff",
+                      "surface": "#fcf8ff",
+                      "primary": "#005440",
+                      "on-tertiary": "#ffffff"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "xl": "32px",
+                      "md": "16px",
+                      "margin-mobile": "16px",
+                      "gutter": "24px",
+                      "base": "4px",
+                      "lg": "24px",
+                      "margin-desktop": "32px",
+                      "xs": "4px",
+                      "sm": "8px"
+              },
+              "fontFamily": {
+                      "headline-sm": ["Inter", "sans-serif"],
+                      "headline-md": ["Inter", "sans-serif"],
+                      "body-lg": ["Inter", "sans-serif"],
+                      "title-md": ["Inter", "sans-serif"],
+                      "headline-lg-mobile": ["Inter", "sans-serif"],
+                      "headline-lg": ["Inter", "sans-serif"],
+                      "label-md": ["Inter", "sans-serif"],
+                      "headline-xl": ["Inter", "sans-serif"],
+                      "body-md": ["Inter", "sans-serif"]
+              },
+              "fontSize": {
+                      "headline-sm": ["18px", {"lineHeight": "26px", "fontWeight": "600"}],
+                      "headline-md": ["22px", {"lineHeight": "30px", "fontWeight": "600"}],
+                      "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "title-md": ["16px", {"lineHeight": "24px", "fontWeight": "600"}],
+                      "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                      "headline-lg": ["28px", {"lineHeight": "36px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                      "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                      "headline-xl": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}]
+              }
+            }
+          }
+        }
+    </script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .material-symbols-outlined.filled { font-variation-settings: 'FILL' 1; }
+        
+        /* Custom styles for floating labels */
+        .form-floating > label {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            padding: 1rem 1rem;
+            pointer-events: none;
+            border: 1px solid transparent;
+            transform-origin: 0 0;
+            transition: opacity .1s ease-in-out, transform .1s ease-in-out;
+        }
+        .form-floating > .form-control {
+            padding: 1rem 1rem;
+        }
+        .form-floating > .form-control:focus,
+        .form-floating > .form-control:not(:placeholder-shown) {
+            padding-top: 1.625rem;
+            padding-bottom: .625rem;
+        }
+        .form-floating > .form-control:focus ~ label,
+        .form-floating > .form-control:not(:placeholder-shown) ~ label {
+            opacity: .65;
+            transform: scale(.85) translateY(-.5rem) translateX(.15rem);
+        }
+    </style>
+</head>
+<body class="bg-surface min-h-screen flex overflow-x-hidden">
+<!-- Left Panel: Branding & Features (col-5 equivalent on Desktop) -->
+<div class="hidden lg:flex lg:w-5/12 bg-gradient-to-br from-primary-container to-primary relative overflow-hidden flex-col justify-between p-xl">
+<!-- Background Decorative Element -->
+<div class="absolute inset-0 opacity-10 bg-[url('https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?auto=format&amp;fit=crop&amp;w=800&amp;q=80')] bg-cover bg-center" data-alt="A subtle, elegant architectural detail of a modern mosque interior in monochrome. The image features soft light filtering through geometric patterns, creating a serene and organized atmosphere suitable for a background texture. The aesthetic is clean, modern, and spiritual."></div>
+<!-- Header / Logo -->
+<div class="relative z-10 flex items-center gap-sm">
+<span class="material-symbols-outlined filled text-[40px] text-on-primary">mosque</span>
+<span class="font-headline-xl text-headline-xl text-on-primary">SIAP-MU</span>
+</div>
+<!-- Value Proposition / Features -->
+<div class="relative z-10 space-y-xl mb-xl">
+<div>
+<h1 class="font-headline-lg text-headline-lg text-on-primary mb-sm">Modernisasi Administrasi Masjid Anda</h1>
+<p class="font-body-lg text-body-lg text-primary-fixed-dim">Kelola semua aspek operasional masjid dalam satu platform yang aman, transparan, dan terintegrasi.</p>
+</div>
+<div class="space-y-lg">
+<div class="flex items-center gap-md">
+<div class="w-12 h-12 rounded-xl bg-white/10 backdrop-blur-sm flex items-center justify-center border border-white/20">
+<span class="material-symbols-outlined text-secondary-fixed">payments</span>
+</div>
+<div>
+<h3 class="font-title-md text-title-md text-on-primary">Keuangan</h3>
+<p class="font-body-md text-body-md text-primary-fixed-dim">Laporan transparan &amp; akuntabel</p>
+</div>
+</div>
+<div class="flex items-center gap-md">
+<div class="w-12 h-12 rounded-xl bg-white/10 backdrop-blur-sm flex items-center justify-center border border-white/20">
+<span class="material-symbols-outlined text-secondary-fixed">event</span>
+</div>
+<div>
+<h3 class="font-title-md text-title-md text-on-primary">Kegiatan</h3>
+<p class="font-body-md text-body-md text-primary-fixed-dim">Jadwal kajian &amp; program jamaah</p>
+</div>
+</div>
+<div class="flex items-center gap-md">
+<div class="w-12 h-12 rounded-xl bg-white/10 backdrop-blur-sm flex items-center justify-center border border-white/20">
+<span class="material-symbols-outlined text-secondary-fixed">mosque</span>
+</div>
+<div>
+<h3 class="font-title-md text-title-md text-on-primary">Fasilitas</h3>
+<p class="font-body-md text-body-md text-primary-fixed-dim">Manajemen aset &amp; pemeliharaan</p>
+</div>
+</div>
+<div class="flex items-center gap-md">
+<div class="w-12 h-12 rounded-xl bg-white/10 backdrop-blur-sm flex items-center justify-center border border-white/20">
+<span class="material-symbols-outlined text-secondary-fixed">campaign</span>
+</div>
+<div>
+<h3 class="font-title-md text-title-md text-on-primary">Pengumuman</h3>
+<p class="font-body-md text-body-md text-primary-fixed-dim">Komunikasi efektif ke jamaah</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer snippet -->
+<div class="relative z-10 font-label-md text-label-md text-primary-fixed-dim">
+            © 2024 SIAP-MU. Sistem Informasi Administrasi Masjid.
+        </div>
+</div>
+<!-- Right Panel: Registration Form (col-7 equivalent on Desktop) -->
+<div class="w-full lg:w-7/12 bg-surface-container-lowest flex items-center justify-center p-md lg:p-xl relative">
+<!-- Mobile Logo (Hidden on Desktop) -->
+<div class="absolute top-md left-md lg:hidden flex items-center gap-sm">
+<span class="material-symbols-outlined filled text-[32px] text-primary">mosque</span>
+<span class="font-title-md text-title-md text-primary">SIAP-MU</span>
+</div>
+<div class="w-full max-w-[480px] bg-surface-container-lowest lg:bg-transparent rounded-xl p-md lg:p-0">
+<div class="mb-xl mt-lg lg:mt-0">
+<h2 class="font-headline-lg-mobile lg:font-headline-lg text-headline-lg-mobile lg:text-headline-lg text-on-surface mb-xs">Daftar Akun Baru</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Lengkapi data di bawah ini untuk memulai pengelolaan masjid.</p>
+</div>
+<form action="#" class="space-y-md" method="POST">
+<!-- Nama Lengkap -->
+<div class="form-floating relative rounded-lg border border-outline-variant bg-surface focus-within:border-primary focus-within:ring-1 focus-within:ring-primary focus-within:shadow-[0_0_0_2px_rgba(15,110,86,0.2)] transition-all">
+<input class="form-control block w-full bg-transparent border-none text-on-surface font-body-md text-body-md focus:ring-0 rounded-lg peer" id="nama" placeholder=" " type="text"/>
+<label class="font-body-md text-body-md text-on-surface-variant peer-focus:text-primary" for="nama">Nama Lengkap</label>
+</div>
+<!-- Nomor HP & Email (Row) -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-md">
+<!-- Nomor HP -->
+<div class="form-floating relative rounded-lg border border-outline-variant bg-surface focus-within:border-primary focus-within:ring-1 focus-within:ring-primary focus-within:shadow-[0_0_0_2px_rgba(15,110,86,0.2)] transition-all">
+<input class="form-control block w-full bg-transparent border-none text-on-surface font-body-md text-body-md focus:ring-0 rounded-lg peer" id="nohp" placeholder=" " type="tel"/>
+<label class="font-body-md text-body-md text-on-surface-variant peer-focus:text-primary" for="nohp">Nomor HP</label>
+</div>
+<!-- Email -->
+<div class="form-floating relative rounded-lg border border-outline-variant bg-surface focus-within:border-primary focus-within:ring-1 focus-within:ring-primary focus-within:shadow-[0_0_0_2px_rgba(15,110,86,0.2)] transition-all">
+<input class="form-control block w-full bg-transparent border-none text-on-surface font-body-md text-body-md focus:ring-0 rounded-lg peer" id="email" placeholder=" " type="email"/>
+<label class="font-body-md text-body-md text-on-surface-variant peer-focus:text-primary" for="email">Email Aktif</label>
+</div>
+</div>
+<!-- Password -->
+<div>
+<div class="form-floating relative rounded-lg border border-outline-variant bg-surface focus-within:border-primary focus-within:ring-1 focus-within:ring-primary focus-within:shadow-[0_0_0_2px_rgba(15,110,86,0.2)] transition-all">
+<input class="form-control block w-full bg-transparent border-none text-on-surface font-body-md text-body-md focus:ring-0 rounded-lg peer pr-12" id="password" onkeyup="checkStrength(this.value)" placeholder=" " type="password"/>
+<label class="font-body-md text-body-md text-on-surface-variant peer-focus:text-primary" for="password">Password</label>
+<button class="absolute right-3 top-1/2 -translate-y-1/2 text-outline hover:text-on-surface-variant" onclick="togglePassword('password', 'icon-pass')" type="button">
+<span class="material-symbols-outlined" id="icon-pass">visibility_off</span>
+</button>
+</div>
+<!-- Password Strength Indicator -->
+<div class="mt-sm space-y-xs">
+<div class="flex gap-xs h-1 w-full rounded-full overflow-hidden">
+<div class="h-full w-1/4 bg-outline-variant transition-colors" id="str-1"></div>
+<div class="h-full w-1/4 bg-outline-variant transition-colors" id="str-2"></div>
+<div class="h-full w-1/4 bg-outline-variant transition-colors" id="str-3"></div>
+<div class="h-full w-1/4 bg-outline-variant transition-colors" id="str-4"></div>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-label-md text-label-md text-outline-variant" id="str-text">Kekuatan password</span>
+</div>
+</div>
+</div>
+<!-- Konfirmasi Password (Error State Example) -->
+<div>
+<div class="form-floating relative rounded-lg border border-error bg-error-container/10 focus-within:border-error focus-within:ring-1 focus-within:ring-error transition-all">
+<input class="form-control block w-full bg-transparent border-none text-on-surface font-body-md text-body-md focus:ring-0 rounded-lg peer pr-12" id="konfirmasi" placeholder=" " type="password" value="password123"/>
+<label class="font-body-md text-body-md text-error peer-focus:text-error" for="konfirmasi">Konfirmasi Password</label>
+<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-error">error</span>
+</div>
+<p class="font-label-md text-label-md text-error mt-xs ml-sm">Password tidak cocok.</p>
+</div>
+<!-- Checkbox -->
+<div class="flex items-start gap-sm pt-xs pb-sm">
+<div class="flex items-center h-5">
+<input class="w-4 h-4 rounded border-outline-variant text-primary focus:ring-primary focus:ring-offset-0 bg-surface" id="terms" type="checkbox"/>
+</div>
+<label class="font-body-md text-body-md text-on-surface-variant" for="terms">
+                        Saya menyetujui <a class="text-primary font-semibold hover:underline" href="#">Syarat &amp; Ketentuan</a> dan <a class="text-primary font-semibold hover:underline" href="#">Kebijakan Privasi</a> SIAP-MU.
+                    </label>
+</div>
+<!-- Submit Button -->
+<button class="w-full rounded-lg bg-gradient-to-r from-primary-container to-secondary-fixed-dim text-on-primary font-title-md text-title-md py-md px-lg shadow-sm hover:shadow-md hover:brightness-105 transition-all flex items-center justify-center gap-sm" type="submit">
+                    Daftar Sekarang
+                    <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+</button>
+</form>
+<!-- Login Redirect -->
+<p class="mt-xl text-center font-body-md text-body-md text-on-surface-variant">
+                Sudah memiliki akun? 
+                <a class="text-primary font-title-md text-title-md hover:underline" href="#">Masuk di sini</a>
+</p>
+</div>
+</div>
+<!-- Inline script for micro-interactions -->
+<script>
+        function togglePassword(inputId, iconId) {
+            const input = document.getElementById(inputId);
+            const icon = document.getElementById(iconId);
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.textContent = 'visibility';
+            } else {
+                input.type = 'password';
+                icon.textContent = 'visibility_off';
+            }
+        }
+
+        function checkStrength(password) {
+            let strength = 0;
+            if (password.length >= 8) strength += 1;
+            if (password.match(/[A-Z]/) && password.match(/[a-z]/)) strength += 1;
+            if (password.match(/[0-9]/)) strength += 1;
+            if (password.match(/[^a-zA-Z0-9]/)) strength += 1;
+
+            const bars = [
+                document.getElementById('str-1'),
+                document.getElementById('str-2'),
+                document.getElementById('str-3'),
+                document.getElementById('str-4')
+            ];
+            const text = document.getElementById('str-text');
+
+            // Reset
+            bars.forEach(bar => bar.className = 'h-full w-1/4 bg-outline-variant transition-colors');
+            
+            if (password.length === 0) {
+                text.textContent = 'Kekuatan password';
+                text.className = 'font-label-md text-label-md text-outline-variant';
+                return;
+            }
+
+            if (strength === 1) {
+                bars[0].classList.replace('bg-outline-variant', 'bg-error');
+                text.textContent = 'Lemah';
+                text.className = 'font-label-md text-label-md text-error';
+            } else if (strength === 2) {
+                bars[0].classList.replace('bg-outline-variant', 'bg-[#F39C12]');
+                bars[1].classList.replace('bg-outline-variant', 'bg-[#F39C12]');
+                text.textContent = 'Sedang';
+                text.className = 'font-label-md text-label-md text-[#F39C12]';
+            } else if (strength >= 3) {
+                bars[0].classList.replace('bg-outline-variant', 'bg-secondary-fixed-dim');
+                bars[1].classList.replace('bg-outline-variant', 'bg-secondary-fixed-dim');
+                bars[2].classList.replace('bg-outline-variant', 'bg-secondary-fixed-dim');
+                if(strength === 4) bars[3].classList.replace('bg-outline-variant', 'bg-secondary-fixed-dim');
+                text.textContent = strength === 4 ? 'Sangat Kuat' : 'Kuat';
+                text.className = 'font-label-md text-label-md text-secondary';
+            }
+        }
+    </script>
+</body></html>
