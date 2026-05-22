@@ -1,19 +1,94 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { useAuth } from '../../contexts/AuthContext';
+import { useToast } from '../../contexts/ToastContext';
+import api from '../../utils/api';
 
 const AjukanPeminjaman = () => {
+    const { isAuthenticated, loading: authLoading } = useAuth();
+    const navigate = useNavigate();
+    const location = useLocation();
+    const toast = useToast();
+
     const [form, setForm] = useState({
         fasilitas: '', tanggal_pinjam: '', tanggal_kembali: '',
         waktu_mulai: '', waktu_selesai: '', keperluan: '', jumlah_peserta: ''
     });
 
+    const [facilities, setFacilities] = useState([]);
+    const [facilitiesLoading, setFacilitiesLoading] = useState(true);
+    const [submitting, setSubmitting] = useState(false);
+
+    // Guard route: redirect to login if not authenticated
+    useEffect(() => {
+        if (!authLoading && !isAuthenticated) {
+            toast.error('Silakan login terlebih dahulu untuk mengajukan peminjaman.');
+            navigate('/login', { state: { from: location }, replace: true });
+        }
+    }, [isAuthenticated, authLoading, navigate, location, toast]);
+
+    // Fetch active facilities
+    useEffect(() => {
+        if (isAuthenticated) {
+            const fetchFacilities = async () => {
+                try {
+                    const res = await api.get('/fasilitas');
+                    // Check if paginated or direct array
+                    setFacilities(res.data.data || res.data || []);
+                } catch (err) {
+                    toast.error('Gagal mengambil daftar fasilitas.');
+                } finally {
+                    setFacilitiesLoading(false);
+                }
+            };
+            fetchFacilities();
+        }
+    }, [isAuthenticated, toast]);
+
     const handleChange = (e) => {
         setForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        alert('Pengajuan peminjaman berhasil dikirim!');
+        setSubmitting(true);
+        try {
+            await api.post('/peminjaman', {
+                id_fasilitas: form.fasilitas,
+                tanggal_pinjam: form.tanggal_pinjam,
+                tanggal_kembali: form.tanggal_kembali,
+                waktu_mulai: form.waktu_mulai,
+                waktu_selesai: form.waktu_selesai,
+                keperluan: form.keperluan,
+                jumlah_peserta: form.jumlah_peserta ? parseInt(form.jumlah_peserta) : null,
+            });
+            toast.success('Pengajuan peminjaman berhasil dikirim!');
+            navigate('/peminjaman/status');
+        } catch (err) {
+            console.error(err);
+            const msg = err.response?.data?.message || 'Gagal mengirim pengajuan peminjaman.';
+            const errors = err.response?.data?.errors;
+            if (errors) {
+                const firstErr = Object.values(errors)[0]?.[0];
+                toast.error(firstErr || msg);
+            } else {
+                toast.error(msg);
+            }
+        } finally {
+            setSubmitting(false);
+        }
     };
+
+    if (authLoading) {
+        return (
+            <div className="min-h-screen flex items-center justify-center bg-surface">
+                <div className="flex flex-col items-center gap-md">
+                    <div className="w-12 h-12 border-4 border-primary-container border-t-primary rounded-full animate-spin"></div>
+                    <p className="font-body-md text-body-md text-on-surface-variant">Memuat...</p>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="min-h-screen bg-surface">
@@ -45,12 +120,13 @@ const AjukanPeminjaman = () => {
                     <form onSubmit={handleSubmit} className="space-y-lg">
                         <div className="relative border border-outline-variant rounded-lg focus-within:border-primary focus-within:ring-1 focus-within:ring-primary transition-all">
                             <label className="absolute -top-2.5 left-3 bg-white px-1 text-label-md font-label-md text-primary">Pilih Fasilitas</label>
-                            <select name="fasilitas" value={form.fasilitas} onChange={handleChange} className="w-full bg-transparent border-none focus:ring-0 text-body-lg font-body-lg text-on-surface p-md rounded-lg" required>
-                                <option value="">Pilih Fasilitas...</option>
-                                <option value="1">Aula Utama (150 orang)</option>
-                                <option value="2">Ruang Rapat (30 orang)</option>
-                                <option value="3">Tenda Kerucut (5 unit)</option>
-                                <option value="4">Sound System (1 set)</option>
+                            <select name="fasilitas" value={form.fasilitas} onChange={handleChange} className="w-full bg-transparent border-none focus:ring-0 text-body-lg font-body-lg text-on-surface p-md rounded-lg" required disabled={facilitiesLoading}>
+                                <option value="">{facilitiesLoading ? 'Memuat daftar fasilitas...' : 'Pilih Fasilitas...'}</option>
+                                {facilities.map(f => (
+                                    <option key={f.id_fasilitas} value={f.id_fasilitas}>
+                                        {f.nama_fasilitas} {f.kapasitas ? `(Kapasitas: ${f.kapasitas} orang)` : ''}
+                                    </option>
+                                ))}
                             </select>
                         </div>
 
@@ -94,10 +170,19 @@ const AjukanPeminjaman = () => {
                         </div>
 
                         <div className="pt-lg border-t border-outline-variant flex flex-col sm:flex-row justify-end gap-md">
-                            <button type="button" className="px-6 py-2.5 rounded-lg border border-primary text-primary font-title-md text-title-md hover:bg-primary-container/5 transition-colors">Batal</button>
-                            <button type="submit" className="px-6 py-2.5 rounded-lg btn-primary text-white font-title-md text-title-md transition-all shadow-md flex items-center justify-center gap-sm">
-                                <span className="material-symbols-outlined text-[20px]">send</span>
-                                Kirim Pengajuan
+                            <button type="button" onClick={() => navigate('/peminjaman/status')} className="px-6 py-2.5 rounded-lg border border-primary text-primary font-title-md text-title-md hover:bg-primary-container/5 transition-colors">Batal</button>
+                            <button type="submit" disabled={submitting} className="px-6 py-2.5 rounded-lg btn-primary text-white font-title-md text-title-md transition-all shadow-md flex items-center justify-center gap-sm disabled:opacity-70">
+                                {submitting ? (
+                                    <>
+                                        <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                                        Mengirim...
+                                    </>
+                                ) : (
+                                    <>
+                                        <span className="material-symbols-outlined text-[20px]">send</span>
+                                        Kirim Pengajuan
+                                    </>
+                                )}
                             </button>
                         </div>
                     </form>

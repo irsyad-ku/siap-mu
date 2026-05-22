@@ -82,6 +82,7 @@ function App() {
 
               <Route path="keuangan" element={<KeuanganIndex />} />
               <Route path="keuangan/input" element={<InputKas />} />
+              <Route path="keuangan/input/:id" element={<InputKas />} />
 
               <Route path="kegiatan" element={<KegiatanIndex />} />
               <Route path="kegiatan/form" element={<KegiatanForm />} />
@@ -97,6 +98,7 @@ function App() {
 
               <Route path="pemeliharaan" element={<PemeliharaanIndex />} />
               <Route path="pemeliharaan/form" element={<PemeliharaanForm />} />
+              <Route path="pemeliharaan/form/:id" element={<PemeliharaanForm />} />
 
               <Route path="peminjaman" element={<PeminjamanIndex />} />
 

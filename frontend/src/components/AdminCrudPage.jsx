@@ -6,7 +6,7 @@ import { useToast } from '../contexts/ToastContext';
 const AdminCrudPage = ({
     title, subtitle, icon, apiEndpoint, idField,
     columns, renderRow, addLabel, addLink, editLink,
-    searchFields = [],
+    searchFields = [], onEdit,
 }) => {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -90,7 +90,11 @@ const AdminCrudPage = ({
                                 <tr key={item[idField] || i} className="border-b border-outline-variant/50 hover:bg-surface-container-lowest transition-colors">
                                     {renderRow(item)}
                                     <td className="py-md px-lg text-right space-x-xs">
-                                        {addLink ? (
+                                        {onEdit ? (
+                                            <button onClick={() => onEdit(item)} className="p-xs text-outline hover:text-primary transition-colors align-middle">
+                                                <span className="material-symbols-outlined text-[20px]">edit</span>
+                                            </button>
+                                        ) : addLink ? (
                                             <Link to={`${editLink || addLink}/${item[idField]}`} className="p-xs text-outline hover:text-primary transition-colors inline-flex align-middle">
                                                 <span className="material-symbols-outlined text-[20px]">edit</span>
                                             </Link>

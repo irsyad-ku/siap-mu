@@ -120,8 +120,12 @@ const KeuanganIndex = () => {
                                     </td>
                                     <td className="py-md px-lg text-on-surface-variant max-w-[200px] truncate">{item.keterangan || '-'}</td>
                                     <td className="py-md px-lg text-right space-x-xs">
-                                        <button className="p-xs text-outline hover:text-primary transition-colors"><span className="material-symbols-outlined text-[20px]">edit</span></button>
-                                        <button onClick={() => handleDelete(item.id_transaksi)} className="p-xs text-outline hover:text-error transition-colors"><span className="material-symbols-outlined text-[20px]">delete</span></button>
+                                        <Link to={`/admin/keuangan/input/${item.id_transaksi}`} className="p-xs text-outline hover:text-primary transition-colors inline-block align-middle">
+                                            <span className="material-symbols-outlined text-[20px]">edit</span>
+                                        </Link>
+                                        <button onClick={() => handleDelete(item.id_transaksi)} className="p-xs text-outline hover:text-error transition-colors align-middle">
+                                            <span className="material-symbols-outlined text-[20px]">delete</span>
+                                        </button>
                                     </td>
                                 </tr>
                             ))}

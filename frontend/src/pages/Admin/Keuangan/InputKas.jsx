@@ -1,16 +1,42 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import api from '../../../utils/api';
 import { useToast } from '../../../contexts/ToastContext';
 
 const InputKas = () => {
+    const { id } = useParams();
+    const isEdit = !!id;
     const [form, setForm] = useState({
         jenis: 'pemasukan', tanggal: '', kategori: '', jumlah: '', keterangan: ''
     });
     const [bukti, setBukti] = useState(null);
     const [loading, setLoading] = useState(false);
+    const [fetching, setFetching] = useState(isEdit);
     const navigate = useNavigate();
     const toast = useToast();
+
+    useEffect(() => {
+        if (isEdit) {
+            setFetching(true);
+            api.get(`/keuangan/${id}`)
+                .then(res => {
+                    const d = res.data.data || res.data;
+                    setForm({
+                        jenis: d.jenis || 'pemasukan',
+                        tanggal: d.tanggal ? d.tanggal.slice(0, 10) : '',
+                        kategori: d.kategori || '',
+                        jumlah: d.jumlah || '',
+                        keterangan: d.keterangan || ''
+                    });
+                })
+                .catch(() => {
+                    toast.error('Gagal memuat data transaksi.');
+                })
+                .finally(() => {
+                    setFetching(false);
+                });
+        }
+    }, [id, isEdit, toast]);
 
     const handleChange = (e) => {
         setForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
@@ -24,10 +50,18 @@ const InputKas = () => {
             Object.entries(form).forEach(([key, val]) => formData.append(key, val));
             if (bukti) formData.append('bukti', bukti);
 
-            await api.post('/keuangan', formData, {
-                headers: { 'Content-Type': 'multipart/form-data' }
-            });
-            toast.success('Transaksi berhasil disimpan!');
+            if (isEdit) {
+                formData.append('_method', 'PUT');
+                await api.post(`/keuangan/${id}`, formData, {
+                    headers: { 'Content-Type': 'multipart/form-data' }
+                });
+                toast.success('Transaksi berhasil diperbarui!');
+            } else {
+                await api.post('/keuangan', formData, {
+                    headers: { 'Content-Type': 'multipart/form-data' }
+                });
+                toast.success('Transaksi berhasil disimpan!');
+            }
             navigate('/admin/keuangan');
         } catch (err) {
             toast.error(err.response?.data?.message || 'Gagal menyimpan transaksi.');
@@ -36,11 +70,19 @@ const InputKas = () => {
         }
     };
 
+    if (fetching) {
+        return (
+            <div className="flex items-center justify-center py-xl">
+                <div className="w-8 h-8 border-3 border-primary/30 border-t-primary rounded-full animate-spin"></div>
+            </div>
+        );
+    }
+
     return (
         <>
             <div>
-                <h2 className="text-headline-xl font-headline-xl text-primary mb-sm">Input Transaksi Kas</h2>
-                <p className="text-body-md font-body-md text-on-surface-variant">Catat pemasukan atau pengeluaran kas masjid dengan detail.</p>
+                <h2 className="text-headline-xl font-headline-xl text-primary mb-sm">{isEdit ? 'Edit Transaksi Kas' : 'Input Transaksi Kas'}</h2>
+                <p className="text-body-md font-body-md text-on-surface-variant">{isEdit ? 'Perbarui detail transaksi kas masjid.' : 'Catat pemasukan atau pengeluaran kas masjid dengan detail.'}</p>
             </div>
             <div className="bg-white rounded-xl border border-[#D1FAE5] ambient-shadow-lvl1 p-lg max-w-3xl">
                 <form onSubmit={handleSubmit} className="space-y-lg">
@@ -116,7 +158,7 @@ const InputKas = () => {
                         <button type="button" onClick={() => navigate('/admin/keuangan')} className="px-6 py-2.5 rounded-lg border border-primary text-primary font-title-md text-title-md hover:bg-primary-container/5 transition-colors">Batal</button>
                         <button type="submit" disabled={loading} className="px-6 py-2.5 rounded-lg btn-primary text-white font-title-md text-title-md transition-all shadow-md flex items-center gap-sm disabled:opacity-50">
                             {loading && <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>}
-                            {loading ? 'Menyimpan...' : 'Simpan Transaksi'}
+                            {loading ? 'Menyimpan...' : (isEdit ? 'Perbarui Transaksi' : 'Simpan Transaksi')}
                         </button>
                     </div>
                 </form>
