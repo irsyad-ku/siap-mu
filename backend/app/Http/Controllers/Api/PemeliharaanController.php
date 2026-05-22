@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\PemeliharaanRequest;
 use App\Http\Resources\PemeliharaanResource;
 use App\Models\Pemeliharaan;
+use App\Models\Keuangan;
 use Illuminate\Http\Request;
 
 class PemeliharaanController extends Controller
@@ -38,7 +39,7 @@ class PemeliharaanController extends Controller
         $data = $request->validated();
         $data['id_user'] = $request->user()->id_user;
         $data['tanggal_lapor'] = now()->toDateString();
-        $data['status'] = 'dilaporkan';
+        $data['status'] = $data['status'] ?? 'dilaporkan';
 
         if ($request->hasFile('foto_kerusakan')) {
             $data['foto_kerusakan'] = $request->file('foto_kerusakan')->store('pemeliharaan', 'public');
@@ -49,6 +50,19 @@ class PemeliharaanController extends Controller
         // Update asset condition if needed
         if ($data['jenis'] === 'laporan_kerusakan') {
             $pemeliharaan->aset->update(['kondisi' => 'perlu_perawatan']);
+        }
+
+        // If completed at creation time with a positive cost, record it in finance
+        if (isset($data['status']) && $data['status'] === 'selesai' && isset($data['biaya']) && $data['biaya'] > 0) {
+            $pemeliharaan->load('aset');
+            Keuangan::create([
+                'jenis' => 'pengeluaran',
+                'kategori' => 'Operasional',
+                'jumlah' => $pemeliharaan->biaya,
+                'keterangan' => "Biaya Pemeliharaan Aset: " . $pemeliharaan->aset->nama_aset . " (ID:" . $pemeliharaan->id_pemeliharaan . ")",
+                'tanggal' => $pemeliharaan->tanggal_selesai ?? now()->toDateString(),
+                'id_user' => $request->user()->id_user,
+            ]);
         }
 
         return response()->json([
@@ -79,10 +93,35 @@ class PemeliharaanController extends Controller
         }
 
         $pemeliharaan->update($data);
+        $pemeliharaan->load('aset');
 
-        // If completed, maybe restore asset condition
+        // If completed, restore asset condition
         if (isset($data['status']) && $data['status'] === 'selesai') {
             $pemeliharaan->aset->update(['kondisi' => 'baik']);
+        }
+
+        // Financial log sync
+        $descSearch = "%(ID:" . $pemeliharaan->id_pemeliharaan . ")%";
+        $existingTx = Keuangan::where('keterangan', 'like', $descSearch)->first();
+
+        if (isset($data['status']) && $data['status'] === 'selesai' && $pemeliharaan->biaya > 0) {
+            $txData = [
+                'jenis' => 'pengeluaran',
+                'kategori' => 'Operasional',
+                'jumlah' => $pemeliharaan->biaya,
+                'keterangan' => "Biaya Pemeliharaan Aset: " . $pemeliharaan->aset->nama_aset . " (ID:" . $pemeliharaan->id_pemeliharaan . ")",
+                'tanggal' => $pemeliharaan->tanggal_selesai ?? now()->toDateString(),
+                'id_user' => $request->user()->id_user,
+            ];
+            if ($existingTx) {
+                $existingTx->update($txData);
+            } else {
+                Keuangan::create($txData);
+            }
+        } else {
+            if ($existingTx) {
+                $existingTx->delete();
+            }
         }
 
         return response()->json([
@@ -96,7 +135,12 @@ class PemeliharaanController extends Controller
      */
     public function destroy(Pemeliharaan $pemeliharaan)
     {
+        $idPemeliharaan = $pemeliharaan->id_pemeliharaan;
         $pemeliharaan->delete();
+
+        // Delete associated financial log
+        $descSearch = "%(ID:" . $idPemeliharaan . ")%";
+        Keuangan::where('keterangan', 'like', $descSearch)->delete();
 
         return response()->json([
             'message' => 'Data pemeliharaan berhasil dihapus',

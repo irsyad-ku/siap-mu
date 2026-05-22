@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\AsetRequest;
 use App\Http\Resources\AsetResource;
 use App\Models\Aset;
+use App\Models\Keuangan;
 use Illuminate\Http\Request;
 
 class AsetController extends Controller
@@ -44,6 +45,19 @@ class AsetController extends Controller
 
         $aset = Aset::create($data);
 
+        // Sync with finance (Keuangan) if there is a cost associated
+        $totalBiaya = $aset->nilai_aset * $aset->jumlah;
+        if ($totalBiaya > 0) {
+            Keuangan::create([
+                'jenis' => 'pengeluaran',
+                'kategori' => 'Lainnya',
+                'jumlah' => $totalBiaya,
+                'keterangan' => "Pembelian Aset: " . $aset->nama_aset . " (ID:" . $aset->id_aset . ")",
+                'tanggal' => now()->toDateString(),
+                'id_user' => $request->user()->id_user,
+            ]);
+        }
+
         return response()->json([
             'message' => 'Aset berhasil ditambahkan',
             'data'    => new AsetResource($aset->load('user')),
@@ -73,6 +87,31 @@ class AsetController extends Controller
 
         $aset->update($data);
 
+        // Sync with finance (Keuangan)
+        $totalBiaya = $aset->nilai_aset * $aset->jumlah;
+        $descSearch = "%(ID:" . $aset->id_aset . ")%";
+        $existingTx = Keuangan::where('keterangan', 'like', $descSearch)->first();
+
+        if ($totalBiaya > 0) {
+            $txData = [
+                'jenis' => 'pengeluaran',
+                'kategori' => 'Lainnya',
+                'jumlah' => $totalBiaya,
+                'keterangan' => "Pembelian Aset: " . $aset->nama_aset . " (ID:" . $aset->id_aset . ")",
+                'tanggal' => $aset->created_at->toDateString(),
+                'id_user' => $request->user()->id_user,
+            ];
+            if ($existingTx) {
+                $existingTx->update($txData);
+            } else {
+                Keuangan::create($txData);
+            }
+        } else {
+            if ($existingTx) {
+                $existingTx->delete();
+            }
+        }
+
         return response()->json([
             'message' => 'Aset berhasil diupdate',
             'data'    => new AsetResource($aset->load('user')),
@@ -84,7 +123,12 @@ class AsetController extends Controller
      */
     public function destroy(Aset $aset)
     {
+        $idAset = $aset->id_aset;
         $aset->delete();
+
+        // Remove associated transaction from finance
+        $descSearch = "%(ID:" . $idAset . ")%";
+        Keuangan::where('keterangan', 'like', $descSearch)->delete();
 
         return response()->json([
             'message' => 'Aset berhasil dihapus',
