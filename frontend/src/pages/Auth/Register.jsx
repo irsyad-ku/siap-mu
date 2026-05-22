@@ -46,9 +46,9 @@ const Register = () => {
         setError('');
         setFieldErrors({});
         try {
-            await register(form);
-            toast.success('Registrasi berhasil! Silakan login dengan akun baru Anda.');
-            navigate('/login');
+            const userData = await register(form);
+            toast.success(`Selamat datang, ${userData.nama}! Akun Anda berhasil dibuat.`);
+            navigate('/');
         } catch (err) {
             const data = err.response?.data;
             if (data?.errors) {

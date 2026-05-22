@@ -77,10 +77,15 @@ class AuthController extends Controller
             'is_active' => true,
         ]);
 
+        $user->update(['last_login' => now()]);
+
+        $token = $user->createToken('auth_token')->plainTextToken;
+
         return response()->json([
             'message' => 'Registrasi berhasil',
             'data'    => [
-                'user' => new UserResource($user),
+                'user'  => new UserResource($user),
+                'token' => $token,
             ],
         ], 201);
     }
