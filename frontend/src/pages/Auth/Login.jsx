@@ -11,23 +11,39 @@ const Login = () => {
     const [error, setError] = useState('');
     const navigate = useNavigate();
     const location = useLocation();
-    const { login, isAuthenticated } = useAuth();
+    const { login, isAuthenticated, user } = useAuth();
     const toast = useToast();
 
     // Redirect if already logged in
     React.useEffect(() => {
-        if (isAuthenticated) navigate('/admin', { replace: true });
-    }, [isAuthenticated, navigate]);
+        if (isAuthenticated && user) {
+            if (user.role === 'admin' || user.role === 'pengurus') {
+                navigate('/admin', { replace: true });
+            } else {
+                navigate('/', { replace: true });
+            }
+        }
+    }, [isAuthenticated, user, navigate]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
         setError('');
         try {
-            const user = await login(email, password);
-            toast.success(`Selamat datang, ${user.nama}!`);
-            const from = location.state?.from?.pathname || '/admin';
-            navigate(from, { replace: true });
+            const userData = await login(email, password);
+            toast.success(`Selamat datang, ${userData.nama}!`);
+            
+            // Redirect based on role
+            let targetPath = '/';
+            if (userData?.role === 'admin' || userData?.role === 'pengurus') {
+                targetPath = '/admin';
+            }
+            
+            const from = location.state?.from?.pathname;
+            // Hanya izinkan redirect ke 'from' jika rute tersebut bukan /admin untuk warga
+            const finalPath = (from && (from !== '/admin' || targetPath === '/admin')) ? from : targetPath;
+            
+            navigate(finalPath, { replace: true });
         } catch (err) {
             const msg = err.response?.data?.message || 'Login gagal. Periksa kembali email dan password.';
             setError(msg);

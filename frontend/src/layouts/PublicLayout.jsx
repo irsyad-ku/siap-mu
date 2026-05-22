@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 
 const PublicLayout = () => {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const location = useLocation();
+    const { isAuthenticated, user, logout, isAdmin, isPengurus } = useAuth();
 
     useEffect(() => {
         const handleScroll = () => {
@@ -66,8 +68,27 @@ const PublicLayout = () => {
 
                     <div className="flex gap-sm items-center">
                         {/* Desktop Auth Links */}
-                        <Link to="/login" className="hidden md:inline-flex items-center justify-center px-lg py-sm rounded-full border border-on-primary text-on-primary font-title-md text-title-md hover:bg-on-primary/10 transition-colors nav-btn-outline nav-text">Masuk</Link>
-                        <Link to="/register" className="hidden sm:inline-flex items-center justify-center px-lg py-sm rounded-full btn-primary-gradient text-on-primary font-title-md text-title-md transition-colors shadow-sm">Daftar</Link>
+                        {isAuthenticated ? (
+                            <>
+                                <span className="hidden md:inline-flex items-center gap-xs font-title-md text-title-md text-on-primary nav-text transition-colors duration-300">
+                                    <span className="material-symbols-outlined text-[20px]" style={{ fontVariationSettings: "'FILL' 1" }}>account_circle</span>
+                                    {user?.nama}
+                                </span>
+                                {(isAdmin || isPengurus) && (
+                                    <Link to="/admin" className="hidden md:inline-flex items-center justify-center px-lg py-sm rounded-full bg-white/20 text-on-primary font-title-md text-title-md hover:bg-white/30 transition-colors nav-text">
+                                        Panel Admin
+                                    </Link>
+                                )}
+                                <button onClick={logout} className="hidden md:inline-flex items-center justify-center px-lg py-sm rounded-full border border-on-primary text-on-primary font-title-md text-title-md hover:bg-on-primary/10 transition-colors nav-btn-outline nav-text">
+                                    Keluar
+                                </button>
+                            </>
+                        ) : (
+                            <>
+                                <Link to="/login" className="hidden md:inline-flex items-center justify-center px-lg py-sm rounded-full border border-on-primary text-on-primary font-title-md text-title-md hover:bg-on-primary/10 transition-colors nav-btn-outline nav-text">Masuk</Link>
+                                <Link to="/register" className="hidden sm:inline-flex items-center justify-center px-lg py-sm rounded-full btn-primary-gradient text-on-primary font-title-md text-title-md transition-colors shadow-sm">Daftar</Link>
+                            </>
+                        )}
                         
                         {/* Mobile Toggle Button */}
                         <button 
@@ -117,8 +138,24 @@ const PublicLayout = () => {
                 </div>
                 
                 <div className="mt-auto border-t border-outline-variant pt-lg flex flex-col gap-sm">
-                    <Link to="/login" className="w-full text-center py-sm rounded-full border border-primary text-primary font-title-md text-title-md hover:bg-primary-container/5 transition-colors">Masuk</Link>
-                    <Link to="/register" className="w-full text-center py-sm rounded-full btn-primary-gradient text-white font-title-md text-title-md shadow-sm">Daftar</Link>
+                    {isAuthenticated ? (
+                        <>
+                            <div className="flex items-center gap-xs p-sm text-on-surface font-title-md text-title-md">
+                                <span className="material-symbols-outlined">account_circle</span>
+                                <span className="truncate">{user?.nama}</span>
+                                <span className="text-xs bg-primary/10 text-primary px-xs py-0.5 rounded uppercase font-semibold">{user?.role}</span>
+                            </div>
+                            {(isAdmin || isPengurus) && (
+                                <Link to="/admin" onClick={() => setMobileMenuOpen(false)} className="w-full text-center py-sm rounded-full bg-primary/10 text-primary font-title-md text-title-md transition-colors">Panel Admin</Link>
+                            )}
+                            <button onClick={() => { logout(); setMobileMenuOpen(false); }} className="w-full text-center py-sm rounded-full border border-outline text-on-surface font-title-md text-title-md transition-colors">Keluar</button>
+                        </>
+                    ) : (
+                        <>
+                            <Link to="/login" onClick={() => setMobileMenuOpen(false)} className="w-full text-center py-sm rounded-full border border-primary text-primary font-title-md text-title-md hover:bg-primary-container/5 transition-colors">Masuk</Link>
+                            <Link to="/register" onClick={() => setMobileMenuOpen(false)} className="w-full text-center py-sm rounded-full btn-primary-gradient text-white font-title-md text-title-md shadow-sm">Daftar</Link>
+                        </>
+                    )}
                 </div>
             </div>
 
