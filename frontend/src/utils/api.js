@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-    baseURL: 'http://localhost:8000/api', // adjust this if your Laravel backend runs on a different port/host
+    baseURL: import.meta.env.VITE_API_URL || 'http://localhost:8000/api',
     withCredentials: true, // required for Sanctum cookie-based authentication
     headers: {
         'Accept': 'application/json',
