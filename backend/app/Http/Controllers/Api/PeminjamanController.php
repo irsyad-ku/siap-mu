@@ -109,6 +109,25 @@ class PeminjamanController extends Controller
 
         $peminjaman->update($data);
 
+        // Update the status of the associated facility dynamically
+        if (isset($data['status'])) {
+            $fasilitas = Fasilitas::find($peminjaman->id_fasilitas);
+            if ($fasilitas) {
+                if ($data['status'] === 'disetujui') {
+                    $fasilitas->update(['status' => 'dipinjam']);
+                } elseif (in_array($data['status'], ['selesai', 'ditolak', 'menunggu'])) {
+                    // Check if there are other active approved loans for this facility
+                    $hasOtherActive = Peminjaman::where('id_fasilitas', $peminjaman->id_fasilitas)
+                        ->where('id_pinjam', '!=', $peminjaman->id_pinjam)
+                        ->where('status', 'disetujui')
+                        ->exists();
+                    if (!$hasOtherActive) {
+                        $fasilitas->update(['status' => 'tersedia']);
+                    }
+                }
+            }
+        }
+
         return response()->json([
             'message' => 'Peminjaman berhasil diupdate',
             'data'    => new PeminjamanResource($peminjaman->load(['user', 'fasilitas', 'diprosesoleh'])),
@@ -120,7 +139,22 @@ class PeminjamanController extends Controller
      */
     public function destroy(Peminjaman $peminjaman)
     {
+        $idFasilitas = $peminjaman->id_fasilitas;
+        $statusPeminjaman = $peminjaman->status;
+
         $peminjaman->delete();
+
+        if ($statusPeminjaman === 'disetujui') {
+            $fasilitas = Fasilitas::find($idFasilitas);
+            if ($fasilitas) {
+                $hasOtherActive = Peminjaman::where('id_fasilitas', $idFasilitas)
+                    ->where('status', 'disetujui')
+                    ->exists();
+                if (!$hasOtherActive) {
+                    $fasilitas->update(['status' => 'tersedia']);
+                }
+            }
+        }
 
         return response()->json([
             'message' => 'Data peminjaman berhasil dihapus',
