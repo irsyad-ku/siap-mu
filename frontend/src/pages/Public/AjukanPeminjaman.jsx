@@ -23,9 +23,9 @@ const AjukanPeminjaman = () => {
     useEffect(() => {
         if (!authLoading && !isAuthenticated) {
             toast.error('Silakan login terlebih dahulu untuk mengajukan peminjaman.');
-            navigate('/login', { state: { from: location }, replace: true });
+            navigate('/login', { replace: true });
         }
-    }, [isAuthenticated, authLoading, navigate, location, toast]);
+    }, [isAuthenticated, authLoading]);
 
     // Fetch active facilities
     useEffect(() => {

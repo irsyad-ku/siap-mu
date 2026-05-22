@@ -19,9 +19,9 @@ const StatusPeminjaman = () => {
     useEffect(() => {
         if (!authLoading && !isAuthenticated) {
             toast.error('Silakan login terlebih dahulu untuk melihat status peminjaman.');
-            navigate('/login', { state: { from: location }, replace: true });
+            navigate('/login', { replace: true });
         }
-    }, [isAuthenticated, authLoading, navigate, location, toast]);
+    }, [isAuthenticated, authLoading]);
 
     // Fetch user loan history
     useEffect(() => {
