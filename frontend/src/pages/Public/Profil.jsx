@@ -27,9 +27,11 @@ const Profil = () => {
         if (!isAuthenticated) {
             toast.error('Silakan login terlebih dahulu untuk mengakses halaman profil.');
             navigate('/login');
-            return;
         }
+    }, [isAuthenticated, navigate, toast]);
 
+    // Prefill form only when the user object changes
+    useEffect(() => {
         if (user) {
             setForm({
                 nama: user.nama || '',
@@ -41,7 +43,7 @@ const Profil = () => {
             const hasCustom = user.foto_url && !user.foto_url.endsWith('default-avatar.png');
             setFotoPreview(hasCustom ? user.foto_url : null);
         }
-    }, [isAuthenticated, user, navigate, toast]);
+    }, [user]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
