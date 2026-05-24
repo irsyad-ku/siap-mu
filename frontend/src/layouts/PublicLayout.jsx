@@ -4,11 +4,16 @@ import { useAuth } from '../contexts/AuthContext';
 
 const PublicLayout = () => {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const [avatarFailed, setAvatarFailed] = useState(false);
     const location = useLocation();
     const { isAuthenticated, user, logout, isAdmin, isPengurus } = useAuth();
-    const avatarUrl = user?.foto_url && !user.foto_url.includes('ui-avatars.com') && !user.foto_url.endsWith('default-avatar.png')
+    const avatarUrl = !avatarFailed && user?.foto_url && !user.foto_url.includes('ui-avatars.com') && !user.foto_url.endsWith('default-avatar.png')
         ? user.foto_url
         : null;
+
+    useEffect(() => {
+        setAvatarFailed(false);
+    }, [user?.foto_url]);
 
     useEffect(() => {
         const handleScroll = () => {
@@ -77,7 +82,7 @@ const PublicLayout = () => {
                                 <Link to="/profil" className="hidden md:inline-flex items-center gap-xs font-title-md text-title-md text-on-primary nav-text transition-colors duration-300 hover:opacity-80">
                                     <div className="w-7 h-7 rounded-full overflow-hidden border-2 border-white/50 flex-shrink-0">
                                         {avatarUrl ? (
-                                            <img src={avatarUrl} alt={user.nama} className="w-full h-full object-cover" />
+                                            <img src={avatarUrl} alt={user.nama} className="w-full h-full object-cover" onError={() => setAvatarFailed(true)} />
                                         ) : (
                                             <div className="w-full h-full bg-white/20 flex items-center justify-center text-on-primary font-bold text-[11px]">
                                                 {user?.nama?.charAt(0).toUpperCase()}
@@ -159,7 +164,7 @@ const PublicLayout = () => {
                             <Link to="/profil" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-sm p-sm rounded-xl hover:bg-primary/5 transition-all group">
                                 <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-primary/20 flex-shrink-0">
                                     {avatarUrl ? (
-                                        <img src={avatarUrl} alt={user.nama} className="w-full h-full object-cover" />
+                                        <img src={avatarUrl} alt={user.nama} className="w-full h-full object-cover" onError={() => setAvatarFailed(true)} />
                                     ) : (
                                         <div className="w-full h-full bg-primary/10 flex items-center justify-center text-primary font-bold text-sm">
                                             {user?.nama?.charAt(0).toUpperCase()}

@@ -1,16 +1,21 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Outlet, NavLink, useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useToast } from '../contexts/ToastContext';
 
 const AdminLayout = () => {
     const [sidebarOpen, setSidebarOpen] = useState(false);
+    const [avatarFailed, setAvatarFailed] = useState(false);
     const { user, logout } = useAuth();
     const toast = useToast();
     const navigate = useNavigate();
-    const avatarUrl = user?.foto_url && !user.foto_url.includes('ui-avatars.com') && !user.foto_url.endsWith('default-avatar.png')
+    const avatarUrl = !avatarFailed && user?.foto_url && !user.foto_url.includes('ui-avatars.com') && !user.foto_url.endsWith('default-avatar.png')
         ? user.foto_url
         : null;
+
+    useEffect(() => {
+        setAvatarFailed(false);
+    }, [user?.foto_url]);
 
     const handleLogout = async () => {
         await logout();
@@ -64,7 +69,7 @@ const AdminLayout = () => {
                     <Link to="/profil" className="flex items-center space-x-md mb-md hover:bg-white/5 p-xs rounded-lg transition-all group">
                         <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center overflow-hidden flex-shrink-0 border-2 border-white/20 group-hover:border-white/40 transition-colors">
                             {avatarUrl ? (
-                                <img src={avatarUrl} alt={user?.nama} className="w-full h-full object-cover" />
+                                <img src={avatarUrl} alt={user?.nama} className="w-full h-full object-cover" onError={() => setAvatarFailed(true)} />
                             ) : (
                                 <span className="text-white font-bold text-sm">
                                     {user?.nama?.charAt(0).toUpperCase() || 'U'}
@@ -110,7 +115,7 @@ const AdminLayout = () => {
                         </Link>
                         <Link to="/profil" title="Profil Saya" className="h-9 w-9 rounded-full overflow-hidden border-2 border-primary/30 hover:border-primary/60 cursor-pointer ml-md flex-shrink-0 transition-all hover:scale-105">
                             {avatarUrl ? (
-                                <img src={avatarUrl} alt={user?.nama} className="w-full h-full object-cover" />
+                                <img src={avatarUrl} alt={user?.nama} className="w-full h-full object-cover" onError={() => setAvatarFailed(true)} />
                             ) : (
                                 <div className="w-full h-full bg-primary/10 flex items-center justify-center text-primary font-bold text-sm">
                                     {user?.nama?.charAt(0).toUpperCase() || 'A'}
