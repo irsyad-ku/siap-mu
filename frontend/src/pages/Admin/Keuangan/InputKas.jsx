@@ -51,6 +51,7 @@ const InputKas = () => {
             if (bukti) formData.append('bukti', bukti);
 
             if (isEdit) {
+                formData.append('_method', 'PUT');
                 await api.post(`/keuangan/${id}`, formData);
                 toast.success('Transaksi berhasil diperbarui!');
             } else {
