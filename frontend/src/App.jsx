@@ -48,7 +48,7 @@ import PengumumanForm from './pages/Admin/Pengumuman/Form';
 import PenggunaIndex from './pages/Admin/Pengguna/Index';
 import PenggunaForm from './pages/Admin/Pengguna/Form';
 
-import Profil from './pages/Admin/Profil';
+import Profil from './pages/Public/Profil';
 import Notifikasi from './pages/Admin/Notifikasi';
 
 function App() {
@@ -63,6 +63,7 @@ function App() {
               <Route path="/pengumuman" element={<PengumumanPublik />} />
               <Route path="/peminjaman/ajukan" element={<AjukanPeminjaman />} />
               <Route path="/peminjaman/status" element={<StatusPeminjaman />} />
+              <Route path="/profil" element={<Profil />} />
             </Route>
 
             {/* Auth Routes */}
@@ -110,7 +111,7 @@ function App() {
               <Route path="pengguna/form" element={<PenggunaForm />} />
               <Route path="pengguna/form/:id" element={<PenggunaForm />} />
 
-              <Route path="profil" element={<Profil />} />
+              <Route path="profil" element={<Navigate to="/profil" replace />} />
               <Route path="notifikasi" element={<Notifikasi />} />
             </Route>
 

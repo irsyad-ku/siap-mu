@@ -58,14 +58,21 @@ const AdminLayout = () => {
 
                 {/* User section at bottom */}
                 <div className="px-md pt-md mt-md border-t border-white/10">
-                    <Link to="/admin/profil" className="flex items-center space-x-md mb-md hover:bg-white/5 p-xs rounded-lg transition-all">
-                        <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center overflow-hidden flex-shrink-0">
-                            <img src={`https://ui-avatars.com/api/?name=${encodeURIComponent(user?.nama || 'User')}&background=27AE60&color=fff&size=40`} alt="Avatar" className="w-full h-full object-cover" />
+                    <Link to="/profil" className="flex items-center space-x-md mb-md hover:bg-white/5 p-xs rounded-lg transition-all group">
+                        <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center overflow-hidden flex-shrink-0 border-2 border-white/20 group-hover:border-white/40 transition-colors">
+                            {user?.foto_url && !user.foto_url.endsWith('default-avatar.png') ? (
+                                <img src={user.foto_url} alt={user?.nama} className="w-full h-full object-cover" />
+                            ) : (
+                                <span className="text-white font-bold text-sm">
+                                    {user?.nama?.charAt(0).toUpperCase() || 'U'}
+                                </span>
+                            )}
                         </div>
                         <div className="flex-1 min-w-0">
                             <p className="font-title-md text-title-md text-white truncate">{user?.nama || 'User'}</p>
                             <p className="font-label-md text-label-md text-white/60 truncate capitalize">{user?.role || 'admin'}</p>
                         </div>
+                        <span className="material-symbols-outlined text-white/40 text-[16px] group-hover:text-white/80 transition-colors">edit</span>
                     </Link>
                     <button
                         onClick={handleLogout}
@@ -98,8 +105,14 @@ const AdminLayout = () => {
                             <span className="material-symbols-outlined">notifications</span>
                             <span className="absolute top-2 right-2 w-2 h-2 bg-error rounded-full"></span>
                         </Link>
-                        <Link to="/admin/profil" className="h-8 w-8 rounded-full bg-surface-variant overflow-hidden border border-outline-variant cursor-pointer ml-md block">
-                            <img src={`https://ui-avatars.com/api/?name=${encodeURIComponent(user?.nama || 'Admin')}&background=0D8ABC&color=fff`} alt="Profile" className="w-full h-full object-cover" />
+                        <Link to="/profil" title="Profil Saya" className="h-9 w-9 rounded-full overflow-hidden border-2 border-primary/30 hover:border-primary/60 cursor-pointer ml-md flex-shrink-0 transition-all hover:scale-105">
+                            {user?.foto_url && !user.foto_url.endsWith('default-avatar.png') ? (
+                                <img src={user.foto_url} alt={user?.nama} className="w-full h-full object-cover" />
+                            ) : (
+                                <div className="w-full h-full bg-primary/10 flex items-center justify-center text-primary font-bold text-sm">
+                                    {user?.nama?.charAt(0).toUpperCase() || 'A'}
+                                </div>
+                            )}
                         </Link>
                     </div>
                 </header>

@@ -70,10 +70,18 @@ const PublicLayout = () => {
                         {/* Desktop Auth Links */}
                         {isAuthenticated ? (
                             <>
-                                <span className="hidden md:inline-flex items-center gap-xs font-title-md text-title-md text-on-primary nav-text transition-colors duration-300">
-                                    <span className="material-symbols-outlined text-[20px]" style={{ fontVariationSettings: "'FILL' 1" }}>account_circle</span>
+                                <Link to="/profil" className="hidden md:inline-flex items-center gap-xs font-title-md text-title-md text-on-primary nav-text transition-colors duration-300 hover:opacity-80">
+                                    <div className="w-7 h-7 rounded-full overflow-hidden border-2 border-white/50 flex-shrink-0">
+                                        {user?.foto_url && !user.foto_url.endsWith('default-avatar.png') ? (
+                                            <img src={user.foto_url} alt={user.nama} className="w-full h-full object-cover" />
+                                        ) : (
+                                            <div className="w-full h-full bg-white/20 flex items-center justify-center text-on-primary font-bold text-[11px]">
+                                                {user?.nama?.charAt(0).toUpperCase()}
+                                            </div>
+                                        )}
+                                    </div>
                                     {user?.nama}
-                                </span>
+                                </Link>
                                 {(isAdmin || isPengurus) && (
                                     <Link to="/admin" className="hidden md:inline-flex items-center justify-center px-lg py-sm rounded-full bg-white/20 text-on-primary font-title-md text-title-md hover:bg-white/30 transition-colors nav-text">
                                         Panel Admin
@@ -140,11 +148,22 @@ const PublicLayout = () => {
                 <div className="mt-auto border-t border-outline-variant pt-lg flex flex-col gap-sm">
                     {isAuthenticated ? (
                         <>
-                            <div className="flex items-center gap-xs p-sm text-on-surface font-title-md text-title-md">
-                                <span className="material-symbols-outlined">account_circle</span>
-                                <span className="truncate">{user?.nama}</span>
-                                <span className="text-xs bg-primary/10 text-primary px-xs py-0.5 rounded uppercase font-semibold">{user?.role}</span>
-                            </div>
+                            <Link to="/profil" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-sm p-sm rounded-xl hover:bg-primary/5 transition-all group">
+                                <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-primary/20 flex-shrink-0">
+                                    {user?.foto_url && !user.foto_url.endsWith('default-avatar.png') ? (
+                                        <img src={user.foto_url} alt={user.nama} className="w-full h-full object-cover" />
+                                    ) : (
+                                        <div className="w-full h-full bg-primary/10 flex items-center justify-center text-primary font-bold text-sm">
+                                            {user?.nama?.charAt(0).toUpperCase()}
+                                        </div>
+                                    )}
+                                </div>
+                                <div className="flex-1 min-w-0">
+                                    <p className="font-title-md text-title-md text-on-surface truncate">{user?.nama}</p>
+                                    <p className="text-xs text-primary font-semibold uppercase tracking-wide">{user?.role === 'warga' ? 'Jamaah' : user?.role}</p>
+                                </div>
+                                <span className="material-symbols-outlined text-on-surface-variant text-[18px] group-hover:text-primary transition-colors">chevron_right</span>
+                            </Link>
                             {(isAdmin || isPengurus) && (
                                 <Link to="/admin" onClick={() => setMobileMenuOpen(false)} className="w-full text-center py-sm rounded-full bg-primary/10 text-primary font-title-md text-title-md transition-colors">Panel Admin</Link>
                             )}

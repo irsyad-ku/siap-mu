@@ -27,6 +27,7 @@ Route::get('/public-stats', [DashboardController::class, 'publicStats']);
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/profile', [AuthController::class, 'profile']);
+    Route::post('/profile', [AuthController::class, 'updateProfile']);
     Route::get('/user', [AuthController::class, 'profile']);
     
     Route::get('/dashboard', [DashboardController::class, 'index']);

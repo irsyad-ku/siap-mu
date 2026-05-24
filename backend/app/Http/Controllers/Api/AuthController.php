@@ -99,4 +99,44 @@ class AuthController extends Controller
             'data' => new UserResource($request->user()),
         ]);
     }
+
+    /**
+     * Update authenticated user profile.
+     */
+    public function updateProfile(Request $request)
+    {
+        $user = $request->user();
+
+        $request->validate([
+            'nama' => 'required|string|max:100',
+            'email' => 'required|string|email|max:100|unique:users,email,' . $user->id_user . ',id_user',
+            'password' => 'nullable|string|min:6|confirmed',
+            'no_hp' => 'nullable|string|max:20',
+            'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        $data = [
+            'nama' => $request->nama,
+            'email' => $request->email,
+            'no_hp' => $request->no_hp,
+        ];
+
+        if ($request->filled('password')) {
+            $data['password'] = Hash::make($request->password);
+        }
+
+        if ($request->hasFile('foto')) {
+            if ($user->foto) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($user->foto);
+            }
+            $data['foto'] = $request->file('foto')->store('users', 'public');
+        }
+
+        $user->update($data);
+
+        return response()->json([
+            'message' => 'Profil berhasil diperbarui',
+            'data'    => new UserResource($user),
+        ]);
+    }
 }
