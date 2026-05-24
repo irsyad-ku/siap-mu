@@ -51,15 +51,10 @@ const InputKas = () => {
             if (bukti) formData.append('bukti', bukti);
 
             if (isEdit) {
-                formData.append('_method', 'PUT');
-                await api.post(`/keuangan/${id}`, formData, {
-                    headers: { 'Content-Type': 'multipart/form-data' }
-                });
+                await api.post(`/keuangan/${id}`, formData);
                 toast.success('Transaksi berhasil diperbarui!');
             } else {
-                await api.post('/keuangan', formData, {
-                    headers: { 'Content-Type': 'multipart/form-data' }
-                });
+                await api.post('/keuangan', formData);
                 toast.success('Transaksi berhasil disimpan!');
             }
             navigate('/admin/keuangan');

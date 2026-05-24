@@ -104,11 +104,10 @@ const Profil = () => {
                 formData.append('foto', fotoFile);
             }
 
-            const res = await api.post('/profile', formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-            });
+            // IMPORTANT: Do NOT set 'Content-Type': 'multipart/form-data' manually.
+            // Axios auto-detects FormData and sets the correct Content-Type WITH boundary.
+            // Manually setting it removes the boundary and breaks PHP file parsing.
+            const res = await api.post('/profile', formData);
 
             const updatedUser = res.data.data;
 
@@ -116,9 +115,14 @@ const Profil = () => {
             setUser(updatedUser);
             localStorage.setItem('user', JSON.stringify(updatedUser));
 
+            // Update foto preview from server response
+            // (the useEffect on [user] will also fire, this ensures the preview is correct)
+            const serverHasPhoto = updatedUser.foto_url && !updatedUser.foto_url.endsWith('default-avatar.png');
+            setFotoPreview(serverHasPhoto ? updatedUser.foto_url : null);
+
             toast.success('Profil Anda berhasil diperbarui!');
             
-            // Reset passwords
+            // Reset passwords and file input
             setForm(prev => ({
                 ...prev,
                 password: '',

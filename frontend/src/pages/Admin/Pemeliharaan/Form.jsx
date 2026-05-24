@@ -63,10 +63,10 @@ const PemeliharaanForm = () => {
 
             if (isEdit) {
                 formData.append('_method', 'PUT');
-                await api.post(`/pemeliharaan/${id}`, formData, { headers: { 'Content-Type': 'multipart/form-data' } });
+                await api.post(`/pemeliharaan/${id}`, formData);
                 toast.success('Laporan pemeliharaan berhasil diperbarui!');
             } else {
-                await api.post('/pemeliharaan', formData, { headers: { 'Content-Type': 'multipart/form-data' } });
+                await api.post('/pemeliharaan', formData);
                 toast.success('Laporan pemeliharaan berhasil dikirim!');
             }
             navigate('/admin/pemeliharaan');

@@ -139,6 +139,7 @@ class AuthController extends Controller
         }
 
         $user->update($data);
+        $user->refresh(); // reload from DB so foto_url accessor is fresh
 
         return response()->json([
             'message' => 'Profil berhasil diperbarui',
