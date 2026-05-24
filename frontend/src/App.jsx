@@ -21,6 +21,7 @@ import Beranda from './pages/Public/Beranda';
 import PengumumanPublik from './pages/Public/Pengumuman';
 import AjukanPeminjaman from './pages/Public/AjukanPeminjaman';
 import StatusPeminjaman from './pages/Public/StatusPeminjaman';
+import KegiatanPublik from './pages/Public/Kegiatan';
 
 // Admin Pages
 import Dashboard from './pages/Admin/Dashboard';
@@ -63,6 +64,7 @@ function App() {
               <Route path="/pengumuman" element={<PengumumanPublik />} />
               <Route path="/peminjaman/ajukan" element={<AjukanPeminjaman />} />
               <Route path="/peminjaman/status" element={<StatusPeminjaman />} />
+              <Route path="/kegiatan" element={<KegiatanPublik />} />
               <Route path="/profil" element={<Profil />} />
             </Route>
 

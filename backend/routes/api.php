@@ -23,6 +23,7 @@ use App\Http\Controllers\Api\DashboardController;
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
 Route::get('/public-stats', [DashboardController::class, 'publicStats']);
+Route::get('/public-kegiatan', [KegiatanController::class, 'publicIndex']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);

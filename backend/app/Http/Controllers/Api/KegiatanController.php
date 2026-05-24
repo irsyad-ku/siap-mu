@@ -34,6 +34,24 @@ class KegiatanController extends Controller
     }
 
     /**
+     * Display a listing of public activities for guests.
+     */
+    public function publicIndex(Request $request)
+    {
+        $query = Kegiatan::publik()->with('user');
+
+        if ($request->has('status')) {
+            $query->where('status', $request->status);
+        }
+
+        $kegiatan = $query->orderBy('tanggal', 'desc')
+                          ->orderBy('waktu_mulai', 'desc')
+                          ->paginate(15);
+
+        return KegiatanResource::collection($kegiatan);
+    }
+
+    /**
      * Store a newly created resource in storage.
      */
     public function store(KegiatanRequest $request)

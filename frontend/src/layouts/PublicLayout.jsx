@@ -61,6 +61,7 @@ const PublicLayout = () => {
                     {/* Desktop Navigation Links */}
                     <div className="hidden md:flex gap-lg items-center">
                         <Link to="/" className="font-title-md text-title-md text-on-primary/90 hover:text-on-primary nav-text transition-colors duration-300">Beranda</Link>
+                        <Link to="/kegiatan" className="font-title-md text-title-md text-on-primary/90 hover:text-on-primary nav-text transition-colors duration-300">Jadwal Kegiatan</Link>
                         <Link to="/pengumuman" className="font-title-md text-title-md text-on-primary/90 hover:text-on-primary nav-text transition-colors duration-300">Pengumuman</Link>
                         <Link to="/peminjaman/ajukan" className="font-title-md text-title-md text-on-primary/90 hover:text-on-primary nav-text transition-colors duration-300">Ajukan Peminjaman</Link>
                         <Link to="/peminjaman/status" className="font-title-md text-title-md text-on-primary/90 hover:text-on-primary nav-text transition-colors duration-300">Status Peminjaman</Link>
@@ -130,6 +131,10 @@ const PublicLayout = () => {
                     <Link to="/" className="flex items-center gap-md p-sm rounded-lg hover:bg-primary-container/10 text-on-surface hover:text-primary transition-all">
                         <span className="material-symbols-outlined">home</span>
                         <span className="font-title-md text-title-md">Beranda</span>
+                    </Link>
+                    <Link to="/kegiatan" className="flex items-center gap-md p-sm rounded-lg hover:bg-primary-container/10 text-on-surface hover:text-primary transition-all">
+                        <span className="material-symbols-outlined">calendar_month</span>
+                        <span className="font-title-md text-title-md">Jadwal Kegiatan</span>
                     </Link>
                     <Link to="/pengumuman" className="flex items-center gap-md p-sm rounded-lg hover:bg-primary-container/10 text-on-surface hover:text-primary transition-all">
                         <span className="material-symbols-outlined">campaign</span>

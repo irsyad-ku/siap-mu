@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import api from '../../utils/api';
 
 const Beranda = () => {
@@ -73,18 +74,18 @@ const Beranda = () => {
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-lg">
                     {[
-                        { icon: 'payments', title: 'Keuangan', desc: 'Laporan pemasukan dan pengeluaran dana infaq secara real-time.' },
-                        { icon: 'event', title: 'Jadwal Kegiatan', desc: 'Informasi kajian rutin, shalat jumat, dan acara hari besar Islam.' },
-                        { icon: 'handshake', title: 'Peminjaman', desc: 'Sistem reservasi fasilitas masjid untuk keperluan umat.' },
-                        { icon: 'campaign', title: 'Pengumuman', desc: 'Berita dan informasi terkini dari takmir masjid untuk jamaah.' },
+                        { icon: 'payments', title: 'Keuangan', desc: 'Laporan pemasukan dan pengeluaran dana infaq secara real-time.', to: '/admin/keuangan' },
+                        { icon: 'event', title: 'Jadwal Kegiatan', desc: 'Informasi kajian rutin, shalat jumat, dan acara hari besar Islam.', to: '/kegiatan' },
+                        { icon: 'handshake', title: 'Peminjaman', desc: 'Sistem reservasi fasilitas masjid untuk keperluan umat.', to: '/peminjaman/ajukan' },
+                        { icon: 'campaign', title: 'Pengumuman', desc: 'Berita dan informasi terkini dari takmir masjid untuk jamaah.', to: '/pengumuman' },
                     ].map((svc) => (
-                        <div key={svc.title} className="bg-surface-container-lowest rounded-xl p-lg border border-outline-variant shadow-sm hover:shadow-md transition-shadow group">
+                        <Link to={svc.to} key={svc.title} className="bg-surface-container-lowest rounded-xl p-lg border border-outline-variant shadow-sm hover:shadow-md hover:border-primary/30 transition-all duration-300 hover:-translate-y-1 group block">
                             <div className="w-14 h-14 bg-surface-container-low rounded-lg flex items-center justify-center mb-md group-hover:bg-primary-container transition-colors">
                                 <span className="material-symbols-outlined text-[28px] text-primary group-hover:text-on-primary transition-colors">{svc.icon}</span>
                             </div>
-                            <h3 className="font-title-md text-title-md text-on-surface mb-xs">{svc.title}</h3>
+                            <h3 className="font-title-md text-title-md text-on-surface mb-xs group-hover:text-primary transition-colors">{svc.title}</h3>
                             <p className="font-body-md text-body-md text-on-surface-variant">{svc.desc}</p>
-                        </div>
+                        </Link>
                     ))}
                 </div>
             </section>
