@@ -8,6 +8,9 @@ const AdminLayout = () => {
     const { user, logout } = useAuth();
     const toast = useToast();
     const navigate = useNavigate();
+    const avatarUrl = user?.foto_url && !user.foto_url.includes('ui-avatars.com') && !user.foto_url.endsWith('default-avatar.png')
+        ? user.foto_url
+        : null;
 
     const handleLogout = async () => {
         await logout();
@@ -60,8 +63,8 @@ const AdminLayout = () => {
                 <div className="px-md pt-md mt-md border-t border-white/10">
                     <Link to="/profil" className="flex items-center space-x-md mb-md hover:bg-white/5 p-xs rounded-lg transition-all group">
                         <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center overflow-hidden flex-shrink-0 border-2 border-white/20 group-hover:border-white/40 transition-colors">
-                            {user?.foto_url && !user.foto_url.endsWith('default-avatar.png') ? (
-                                <img src={user.foto_url} alt={user?.nama} className="w-full h-full object-cover" />
+                            {avatarUrl ? (
+                                <img src={avatarUrl} alt={user?.nama} className="w-full h-full object-cover" />
                             ) : (
                                 <span className="text-white font-bold text-sm">
                                     {user?.nama?.charAt(0).toUpperCase() || 'U'}
@@ -106,8 +109,8 @@ const AdminLayout = () => {
                             <span className="absolute top-2 right-2 w-2 h-2 bg-error rounded-full"></span>
                         </Link>
                         <Link to="/profil" title="Profil Saya" className="h-9 w-9 rounded-full overflow-hidden border-2 border-primary/30 hover:border-primary/60 cursor-pointer ml-md flex-shrink-0 transition-all hover:scale-105">
-                            {user?.foto_url && !user.foto_url.endsWith('default-avatar.png') ? (
-                                <img src={user.foto_url} alt={user?.nama} className="w-full h-full object-cover" />
+                            {avatarUrl ? (
+                                <img src={avatarUrl} alt={user?.nama} className="w-full h-full object-cover" />
                             ) : (
                                 <div className="w-full h-full bg-primary/10 flex items-center justify-center text-primary font-bold text-sm">
                                     {user?.nama?.charAt(0).toUpperCase() || 'A'}

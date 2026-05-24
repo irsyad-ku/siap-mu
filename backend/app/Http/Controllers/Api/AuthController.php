@@ -8,6 +8,7 @@ use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
@@ -107,12 +108,6 @@ class AuthController extends Controller
     {
         $user = $request->user();
 
-        \Illuminate\Support\Facades\Log::info('Update Profile Request:', $request->except(['password', 'password_confirmation']));
-        \Illuminate\Support\Facades\Log::info('Has File foto: ' . ($request->hasFile('foto') ? 'yes' : 'no'));
-        if ($request->hasFile('foto')) {
-            \Illuminate\Support\Facades\Log::info('File Details: ' . $request->file('foto')->getClientOriginalName() . ', size: ' . $request->file('foto')->getSize());
-        }
-
         $request->validate([
             'nama' => 'required|string|max:100',
             'email' => 'required|string|email|max:100|unique:users,email,' . $user->id_user . ',id_user',
@@ -133,7 +128,7 @@ class AuthController extends Controller
 
         if ($request->hasFile('foto')) {
             if ($user->foto) {
-                \Illuminate\Support\Facades\Storage::disk('public')->delete($user->foto);
+                Storage::disk('public')->delete($user->foto);
             }
             $data['foto'] = $request->file('foto')->store('users', 'public');
         }

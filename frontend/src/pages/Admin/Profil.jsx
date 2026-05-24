@@ -6,6 +6,9 @@ import api from '../../utils/api';
 const Profil = () => {
     const { user, setUser } = useAuth();
     const toast = useToast();
+    const avatarUrl = user?.foto_url && !user.foto_url.includes('ui-avatars.com') && !user.foto_url.endsWith('default-avatar.png')
+        ? user.foto_url
+        : null;
     const [form, setForm] = useState({
         nama: user?.nama || '',
         email: user?.email || '',
@@ -78,11 +81,13 @@ const Profil = () => {
                 <div className="bg-white rounded-xl border border-[#D1FAE5] ambient-shadow-lvl1 p-lg flex flex-col items-center text-center space-y-md">
                     <div className="relative group">
                         <div className="w-28 h-28 rounded-full overflow-hidden border-4 border-primary/20 bg-primary-container/20 flex items-center justify-center shadow-md">
-                            <img 
-                                src={`https://ui-avatars.com/api/?name=${encodeURIComponent(user?.nama || 'User')}&background=0D5440&color=fff&size=120`} 
-                                alt="Avatar" 
-                                className="w-full h-full object-cover" 
-                            />
+                            {avatarUrl ? (
+                                <img src={avatarUrl} alt={user?.nama} className="w-full h-full object-cover" />
+                            ) : (
+                                <div className="w-full h-full bg-primary/10 flex items-center justify-center text-primary font-bold text-4xl">
+                                    {user?.nama?.charAt(0).toUpperCase() || 'U'}
+                                </div>
+                            )}
                         </div>
                     </div>
                     <div>

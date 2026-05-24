@@ -22,6 +22,14 @@ const Profil = () => {
     const [fotoPreview, setFotoPreview] = useState(null);
     const [loading, setLoading] = useState(false);
 
+    const getCustomFotoUrl = (value) => {
+        if (!value || value.includes('ui-avatars.com') || value.endsWith('default-avatar.png')) {
+            return null;
+        }
+
+        return value;
+    };
+
     // Guard route: redirect if not authenticated
     useEffect(() => {
         if (!isAuthenticated) {
@@ -40,8 +48,7 @@ const Profil = () => {
                 password: '',
                 password_confirmation: ''
             });
-            const hasCustom = user.foto_url && !user.foto_url.endsWith('default-avatar.png');
-            setFotoPreview(hasCustom ? user.foto_url : null);
+            setFotoPreview(getCustomFotoUrl(user.foto_url));
         }
     }, [user]);
 
@@ -117,8 +124,7 @@ const Profil = () => {
 
             // Update foto preview from server response
             // (the useEffect on [user] will also fire, this ensures the preview is correct)
-            const serverHasPhoto = updatedUser.foto_url && !updatedUser.foto_url.endsWith('default-avatar.png');
-            setFotoPreview(serverHasPhoto ? updatedUser.foto_url : null);
+            setFotoPreview(getCustomFotoUrl(updatedUser.foto_url));
 
             toast.success('Profil Anda berhasil diperbarui!');
             
@@ -138,8 +144,6 @@ const Profil = () => {
     };
 
     if (!user) return null;
-
-    const hasCustomAvatar = user.foto_url && !user.foto_url.endsWith('default-avatar.png');
 
     return (
         <div className="pt-28 pb-16 px-margin-mobile md:px-margin-desktop bg-gradient-to-br from-[#E8F5EF] via-[#F4FCF7] to-[#FFFFFF] min-h-screen relative overflow-hidden">
@@ -173,6 +177,7 @@ const Profil = () => {
                                     src={fotoPreview} 
                                     alt="Foto Profil" 
                                     className="w-full h-full object-cover" 
+                                    onError={() => setFotoPreview(null)}
                                 />
                             ) : (
                                 <div className="w-full h-full bg-[#005440]/10 flex items-center justify-center">

@@ -80,11 +80,9 @@ class User extends Authenticatable
     /**
      * Get full URL for user avatar photo.
      */
-    public function getFotoUrlAttribute(): string
+    public function getFotoUrlAttribute(): ?string
     {
-        return $this->foto
-            ? asset('storage/' . $this->foto)
-            : 'https://ui-avatars.com/api/?name=' . urlencode($this->nama) . '&background=27AE60&color=fff';
+        return $this->foto ? asset('storage/' . $this->foto) : null;
     }
 
     /**
