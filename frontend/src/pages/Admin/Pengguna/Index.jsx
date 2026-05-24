@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import AdminCrudPage from '../../../components/AdminCrudPage';
 
 const roleBadge = (role) => {
@@ -9,6 +9,36 @@ const roleBadge = (role) => {
     };
     const s = map[role] || { label: role, color: 'bg-surface-variant text-on-surface-variant' };
     return <span className={`px-2 py-1 rounded-full ${s.color} font-label-md text-[10px] font-bold`}>{s.label}</span>;
+};
+
+const UserAvatar = ({ user }) => {
+    const [failed, setFailed] = useState(false);
+    const initials = (user.nama || 'U')
+        .split(' ')
+        .filter(Boolean)
+        .slice(0, 2)
+        .map(part => part.charAt(0).toUpperCase())
+        .join('');
+    const fotoUrl = !failed && user.foto_url && !user.foto_url.includes('ui-avatars.com') && !user.foto_url.endsWith('default-avatar.png')
+        ? user.foto_url
+        : null;
+
+    if (fotoUrl) {
+        return (
+            <img
+                src={fotoUrl}
+                alt={user.nama}
+                className="w-8 h-8 rounded-full object-cover bg-primary/10 flex-shrink-0"
+                onError={() => setFailed(true)}
+            />
+        );
+    }
+
+    return (
+        <div className="w-8 h-8 rounded-full bg-[#27AE60] text-white flex items-center justify-center font-label-md text-label-md font-bold flex-shrink-0">
+            {initials || 'U'}
+        </div>
+    );
 };
 
 const PenggunaIndex = () => (
@@ -26,7 +56,7 @@ const PenggunaIndex = () => (
             <>
                 <td className="py-md px-lg text-on-surface font-medium">
                     <div className="flex items-center gap-sm">
-                        <img src={`https://ui-avatars.com/api/?name=${encodeURIComponent(item.nama)}&background=27AE60&color=fff&size=32`} alt="" className="w-8 h-8 rounded-full" />
+                        <UserAvatar user={item} />
                         {item.nama}
                     </div>
                 </td>
