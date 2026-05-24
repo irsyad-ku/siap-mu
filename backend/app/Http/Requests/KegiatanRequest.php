@@ -29,7 +29,7 @@ class KegiatanRequest extends FormRequest
             'waktu_mulai'   => ['required', 'date_format:H:i'],
             'waktu_selesai' => ['nullable', 'date_format:H:i', 'after:waktu_mulai'],
             'lokasi'        => ['required', 'string', 'max:150'],
-            'status'        => ['required', Rule::in(['akan_datang', 'berlangsung', 'selesai', 'dibatalkan'])],
+            'status'        => ['sometimes', Rule::in(['akan_datang', 'berlangsung', 'selesai', 'dibatalkan'])],
             'is_publik'     => ['boolean'],
         ];
     }

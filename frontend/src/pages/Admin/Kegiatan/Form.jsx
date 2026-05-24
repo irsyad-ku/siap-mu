@@ -8,7 +8,7 @@ const KegiatanForm = () => {
     const isEdit = !!id;
     const [form, setForm] = useState({
         nama_kegiatan: '', deskripsi: '', tanggal: '',
-        waktu_mulai: '', waktu_selesai: '', lokasi: 'Masjid', is_publik: true
+        waktu_mulai: '', waktu_selesai: '', lokasi: 'Masjid', is_publik: true, status: 'akan_datang'
     });
     const [loading, setLoading] = useState(false);
     const [fetching, setFetching] = useState(isEdit);
@@ -28,6 +28,7 @@ const KegiatanForm = () => {
                     waktu_selesai: d.waktu_selesai || '',
                     lokasi: d.lokasi || 'Masjid',
                     is_publik: d.is_publik ?? true,
+                    status: d.status || 'akan_datang',
                 });
             }).catch(() => toast.error('Gagal memuat data.')).finally(() => setFetching(false));
         }
@@ -93,9 +94,20 @@ const KegiatanForm = () => {
                             <input name="waktu_selesai" value={form.waktu_selesai} onChange={handleChange} className="w-full bg-transparent border-none focus:ring-0 p-md rounded-lg" type="time" />
                         </div>
                     </div>
-                    <div className="relative border border-outline-variant rounded-lg focus-within:border-primary transition-all">
-                        <label className="absolute -top-2.5 left-3 bg-white px-1 text-label-md font-label-md text-primary">Lokasi</label>
-                        <input name="lokasi" value={form.lokasi} onChange={handleChange} className="w-full bg-transparent border-none focus:ring-0 p-md rounded-lg" type="text" />
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-md">
+                        <div className="relative border border-outline-variant rounded-lg focus-within:border-primary transition-all">
+                            <label className="absolute -top-2.5 left-3 bg-white px-1 text-label-md font-label-md text-primary">Lokasi</label>
+                            <input name="lokasi" value={form.lokasi} onChange={handleChange} className="w-full bg-transparent border-none focus:ring-0 p-md rounded-lg" type="text" />
+                        </div>
+                        <div className="relative border border-outline-variant rounded-lg focus-within:border-primary transition-all">
+                            <label className="absolute -top-2.5 left-3 bg-white px-1 text-label-md font-label-md text-primary">Status Kegiatan</label>
+                            <select name="status" value={form.status} onChange={handleChange} className="w-full bg-transparent border-none focus:ring-0 p-md rounded-lg text-body-lg font-body-lg text-on-surface">
+                                <option value="akan_datang">Akan Datang</option>
+                                <option value="berlangsung">Berlangsung</option>
+                                <option value="selesai">Selesai</option>
+                                <option value="dibatalkan">Dibatalkan</option>
+                            </select>
+                        </div>
                     </div>
                     <div className="flex items-center gap-sm">
                         <input type="checkbox" id="is_publik" name="is_publik" checked={form.is_publik} onChange={handleChange} className="w-4 h-4 rounded border-outline-variant text-primary focus:ring-primary" />
